@@ -21,6 +21,7 @@ class Piece:
             "moveLeftOne": self.moveLeftOne,
             "moveRightOne": self.moveRightOne
         }
+        self.updateValues()
 
     def handleCollision(self, gameState, targetX, targetY):
         """Check for collision at the target location."""

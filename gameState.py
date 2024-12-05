@@ -18,9 +18,18 @@ class GameState:
     def executeRound(self):
         """Go through each card selected, determine the priority
         after stacks, sort them accordingly, and execute each card in order"""
+        cards = sorted(self.selectedCards, key=self.getPriority, reverse=True)
+        for card in cards:
+            self.useCard(card)
         pass
 
-    def useCard(self, target, card):
-        for action in card.actions:
-            action.execute(target)
+    def useCard(self, cardTarPair):
+        card, target = cardTarPair
+        card.useCard(target, self)
+
+    def getPriority(self, cardPiecePair):
+        card, piece = cardPiecePair
+        priority = card.priority
+        priority += piece.values["priority"]
+        return priority
         
