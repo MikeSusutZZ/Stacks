@@ -1,6 +1,7 @@
 from board import Board
 from card import Card
 from piece import Piece
+import random
 
 class GameState:
     """
@@ -19,6 +20,8 @@ class GameState:
         self.p1Cards = []  # Cards for player 1
         self.p2Cards = []  # Cards for player 2
         self.selectedCards = []  # Cards selected for the current round
+        self.playerPriority = random.randint(1,2)
+        print(f"The player with first priority is {self.playerPriority}")
 
     def executeRound(self):
         """Go through each card selected, determine the priority
@@ -26,6 +29,10 @@ class GameState:
         cards = sorted(self.selectedCards, key=self.getPriority, reverse=True)
         for card in cards:
             self.useCard(card)
+        if self.playerPriority == 1:
+            self.playerPriority = 2
+        else:
+            self.playerPriority = 1
 
     def useCard(self, cardTarPair):
         card, target_id = cardTarPair
@@ -37,6 +44,8 @@ class GameState:
         piece = self.pieces[piece_id]  # Get the piece by its ID
         priority = card.priority
         priority += piece.values["priority"]
+        if piece.player == self.playerPriority:
+            priority += 0.5
         return priority
 
     def printBoard(self, perspective=1):

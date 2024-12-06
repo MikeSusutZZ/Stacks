@@ -11,7 +11,7 @@ gameState = GameState()
 # gameState.executeRound()
 # gameState.printBoard()
 
-gameState.printBoard()
+
 gameState.selectedCards.append((Card("approach"), "p1-C"))
 gameState.selectedCards.append((Card("approach"), "p2-C"))
 gameState.selectedCards.append((Card("strafe left"), "p2-C"))
