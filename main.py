@@ -5,16 +5,22 @@ from card import Card
 gameState = GameState()
 
 # Create pieces for both players
-piece1 = Piece(1, 1, False, "P1", 1)
-piece2 = Piece(2, 2, False, "P2", 2)
 
-gameState.pieces.extend([piece1, piece2])
+# gameState.printBoard()
 
-gameState.selectedCards.append((Card("approach"), piece1))
-gameState.selectedCards.append((Card("sharpen"), piece1))
-gameState.selectedCards.append((Card("strafe right"), piece1))
+# gameState.executeRound()
+# gameState.printBoard()
 
-gameState.executeRound() 
+gameState.printBoard()
+gameState.selectedCards.append((Card("approach"), "p1-C"))
+gameState.selectedCards.append((Card("approach"), "p2-C"))
+gameState.selectedCards.append((Card("strafe left"), "p2-C"))
+gameState.selectedCards.append((Card("strafe right"), "p1-C"))
+gameState.executeRound()
+gameState.printBoard()
+
+gameState.printBoard(2)
+
 
 # # Move Player 1 (normal perspective)
 # piece1.takeAction("addNegativeAttackStack", gameState)

@@ -25,7 +25,7 @@ class Piece:
 
     def handleCollision(self, gameState, targetX, targetY):
         """Check for collision at the target location."""
-        for piece in gameState.pieces:
+        for piece in gameState.pieces.values():
             if piece is self:
                 continue  # Skip checking against itself
             if piece.locX == targetX and piece.locY == targetY:

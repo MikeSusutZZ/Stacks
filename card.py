@@ -10,6 +10,10 @@ cards = {
     "strafe right": {
         "priority": 4,
         "actions": ["moveRightOne"]
+    },
+    "strafe left": {
+        "priority": 1,
+        "actions": ["moveLeftOne"]
     }
 }
 
