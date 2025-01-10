@@ -1,6 +1,7 @@
 from board import Board
 from card import Card
 from piece import Piece
+from menus import Menu
 import random
 
 class GameState:
@@ -26,6 +27,10 @@ class GameState:
     def executeRound(self):
         """Go through each card selected, determine the priority
         after stacks, sort them accordingly, and execute each card in order."""
+
+        # Get the user choices
+        Menu.assignCards(self)
+
         cards = sorted(self.selectedCards, key=self.getPriority, reverse=True)
         for card in cards:
             self.useCard(card)
@@ -53,6 +58,8 @@ class GameState:
         Prints the board state in a 5x5 grid with the player's perspective.
         The perspective determines whether Player 1 or Player 2 sees their pieces at the bottom.
         """
+        for piece in self.pieces.values():
+            print(piece)
         # Initialize an empty 5x5 grid
         grid = [[" " * 7 for _ in range(5)] for _ in range(5)]
         

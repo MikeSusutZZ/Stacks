@@ -19,7 +19,10 @@ class Piece:
             "moveUpOne": self.moveUpOne,
             "moveDownOne": self.moveDownOne,
             "moveLeftOne": self.moveLeftOne,
-            "moveRightOne": self.moveRightOne
+            "moveRightOne": self.moveRightOne,
+            "addNegativeAttackStackToOpp": lambda gameState: self.addNegativeStackToOpp("attack", gameState),
+            "addNegativeDefenceStackToOpp": lambda gameState: self.addNegativeStackToOpp("defence", gameState),
+            "addNegativePriorityStackToOpp": lambda gameState: self.addNegativeStackToOpp("priority", gameState),
         }
         self.updateValues()
 
@@ -101,6 +104,38 @@ class Piece:
         else:
             print(f"{self.id} didn't move")
 
+    def addNegativeStackToOpp(self, stackType, gameState):
+        """Applies a negative stack to an opponent within one space of the piece."""
+        nearby_pieces = [
+            piece for piece in gameState.pieces.values()
+            if piece.player != self.player and
+            abs(piece.locX - self.locX) <= 1 and
+            abs(piece.locY - self.locY) <= 1
+        ]
+        if not nearby_pieces:
+            print("No valid targets within range.")
+            return
+
+        print("Select a target to apply the negative stack:")
+        for i, piece in enumerate(nearby_pieces, start=1):
+            print(f"{i}: {piece.id} at ({piece.locX}, {piece.locY})")
+
+        while True:
+            try:
+                choice = int(input("Enter the number of the target (or 0 to cancel): "))
+                if choice == 0:
+                    print("Action canceled.")
+                    return
+                if 1 <= choice <= len(nearby_pieces):
+                    target = nearby_pieces[choice - 1]
+                    target.addStack(stackType, -1)
+                    print(f"Applied a negative {stackType} stack to {target.id}.")
+                    return
+                else:
+                    print("Invalid choice. Try again.")
+            except ValueError:
+                print("Invalid input. Enter a number.")
+
     def takeAction(self, name, gameState):
         # Look for the method in the dictionary and call it
         if name in self.actions:
@@ -119,4 +154,13 @@ class Piece:
             self.values[stack.type] += stack.amt
 
     def __str__(self) -> str:
-        return f"{self.id}: ({self.locX}, {self.locY})\n{self.values}\n\n"
+        # Format stacks as a string with their type and amount
+        stacks_str = ", ".join([f"{stack.type}({stack.amt})" for stack in self.stacks]) if self.stacks else "No stacks"
+        
+        # Format values as a string
+        values_str = ", ".join([f"{key}: {value}" for key, value in self.values.items()])
+        
+        return (f"Piece ID: {self.id}\n"
+                f"Stacks: {stacks_str}\n"
+                f"Values: {values_str}\n")
+
